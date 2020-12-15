@@ -34,5 +34,6 @@ class MainPageConfig with ChangeNotifier {
 
   void changeFontSize(double change){
     _fontSize = _fontSize + change;
+    notifyListeners();
   }
 }
