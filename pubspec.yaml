@@ -22,6 +22,11 @@ environment:
 
 dependencies:
   provider: ^4.3.2+3
+  json_annotation: ^3.1.1
+  json_serializable: ^3.5.1
+  build_runner: ^1.10.10
+  shared_preferences: 0.5.12+4
+  http: ^0.12.2
   flutter:
     sdk: flutter
 

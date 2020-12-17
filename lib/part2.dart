@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:mobile_dev/HTTPRequest.dart';
 import 'package:mobile_dev/ListItemInfo.dart';
 import 'package:mobile_dev/configPage.dart';
 import 'package:mobile_dev/part1.dart';
@@ -11,6 +14,7 @@ class Lab2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    sendRequest(context);
     return ChangeNotifierProvider<MainPageConfig>(
       create: (context) => MainPageConfig(),
       child: MaterialApp(
@@ -19,6 +23,34 @@ class Lab2 extends StatelessWidget {
       ),
     );
   }
+}
+
+void sendRequest(BuildContext context) async {
+  HTTPRequest httpRequest = new HTTPRequest();
+  try{
+    final List<Country> countries = await httpRequest.fetchCountries();
+    print(jsonEncode(countries));
+  }
+  on Exception catch(e) {
+    createAlertDialog(context, e.toString());
+  }
+}
+
+createAlertDialog(BuildContext context, String message){
+  return showDialog(context: context, builder: (context) {
+    return AlertDialog(
+      title: Text("Request Error!!!"),
+      content: Text(message),
+      actions: [
+        MaterialButton(
+          child: Text("Close"),
+          onPressed: (){
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
+  });
 }
 
 void openPage(BuildContext context) {
@@ -50,6 +82,7 @@ void openConfigPage(BuildContext context) {
 class MyStatelessWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    context.watch<MainPageConfig>().initState();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: context.watch<MainPageConfig>().getColor,
